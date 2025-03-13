@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025國際交響樂團演奏會(ISOC)</title>
+    <link rel="icon" href="./img/logo.png">
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <header id="navbar">
+        <h2 id="site-title">2025國際交響樂團演奏會(ISOC)</h2>
+        <img src="./img/logo.png" alt="logo" id="logo">
+        <a href="home.html" id="home">Home</a>
+        <a href="news.html" id="news">News</a>
+        <a href="performance.html" id="performance">Performance</a>
+        <a href="tickets.html" id="tickets">Tickets</a>
+        <a href="search.html" id="search">Search</a>
+        <a href="admin.php" id="admin">Admin</a>
+    </header>
+    <main>
+        <form onsubmit="tickets(event)" method="get" id="ticketsform">
+            <h2>購票資訊區</h2>
+            <label for="firstname">First name</label>
+            <input type="text" id="firstname" name="firstname" required><br>
+            <label for="lastname">Last name</label>
+            <input type="text" id="lastname" name="lastname" required><br>
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone" required><br>
+            <label for="Password">Password</label>
+            <input type="text" id="password" name="password" required><br>
+            <label>Verification</label>
+            <div id="drag-box"></div>
+            <div id="userans"></div>
+            <button class="btn w-75" type="button" onclick="rt()">Reset</button>
+            <button class="btn w-75">Submit</button>
+        </form>
+    </main>
+    <footer>
+        <div id="share-info">
+            <img src="./img/facebook.png" alt="fb" id="fb">
+            <img src="./img/google.png" alt="google" id="google">
+        </div>
+        <span id="footer">Copyright &copy; 2025 ISOC All Rights Reserved</span>
+    </footer>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/jquery-ui.min.js"></script>
+    <script src="./js/bootstrap.js"></script>
+    <script src="./js/veri.js"></script>
+    <script>
+        let ans = [], userans = [];
+        function rt() {
+            veri();
+            $("#ticketsform input").val("");
+        }
+        function tickets() {
+            event.preventDefault();
+            const form = $("form")[0];
+            const formData = new FormData(form);
+            if (userans.join("") === ans.join("")) {
+                $.ajax({
+                    url: "./post.php",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (res) {
+                        alert("資料送出" + res);
+                        location.href = "home.html";
+                    },
+
+                    error: function () {
+                        alert("eeee~失敗");
+                    }
+                });
+            } else {
+                alert("驗證碼排列錯誤");
+                location.reload();
+            }
+        }
+    </script>
+</body>
+
+</html>
